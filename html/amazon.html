@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Amazon Clone</title>
+        <!-- Defines the character encoding (supports Arabic and special characters) -->
+        <meta charset="UTF-8">
+        <!-- Makes the website responsive on mobile and different screen sizes -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Page description for SEO and social media preview -->
+        <meta name="description" content="E-commerce web application built with HTML, CSS, and JavaScript">
+
+        <!-- Loads Google Fonts to be used later in CSS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+        <!-- Links the HTML file with the CSS stylesheet -->
+        <link rel="stylesheet" href="../css/main page/header.css">
+        <link rel="stylesheet" href="../css/main page/body.css">
+
+    </head>
+    <body>
+
+        <header id="header_bar">
+            <img id="amazon_logo_in_header" src="../assest/images/amazon-logo-white.png" alt="Amazon Logo">
+            <input id="search" type="text" placeholder="Search">
+            <img id="search_icon" src="../assest/images/icons/search-icon.png" alt="search icon">
+            <img id="return_orders_icon" src="../assest/images/return&orders_img.png">
+
+            <div class="cart_container">
+                    <span id="number_of_items_in_cart">5</span>
+                    <img id="cart_img" src="../assest/images/icons/cart-icon.png">
+            </div>
+            <span id="cart_text">Cart</span>
+        </header>
+
+        <main class="main_container">
+            <div class="product-grid">
+
+                    <div class="product_card">
+
+                <div class="img-container">
+                    <img id="product_img" src="../assest/images/products/athletic-cotton-socks-6-pairs.jpg">
+                </div>
+                
+                <div class="product-name">
+                    Black and Gray Athletic Cotton Socks - 6 Pairs
+                </div>
+
+                <div class="product-rating-container">
+                    <img id="product_rating" src="../assest/images/ratings/rating-45.png">
+
+                    <div class="number-of-reveiws">
+                        87
+                    </div>
+                </div>
+
+                <div class="product-price">
+                    $10.90
+                </div>
+                
+                <div class="product-quantity-container">
+                    <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                    </select>
+                </div>
+
+                <div class="button-container">
+                    <button class="add-to-card-button">Add To Card</button>
+                </div>
+          
+            </div>
+
+
+        </main>
+
+
+        <script src="../scrips/amazon.js"></script>
+    </body>
+</html>
