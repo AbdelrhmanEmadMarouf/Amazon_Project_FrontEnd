@@ -15,7 +15,7 @@ const numberOfProducts = products.length;
 const itemsInCart = new Array(numberOfProducts).fill(0);
 const product_grid = document.querySelector('.product-grid');
 const numOfItemsInCart = document.querySelector('#number_of_items_in_cart');
-
+const searchBar = document.getElementById('search');
 let numberOfItemsInCart = 0 ;
 
 function getStarImg(starsCount){
@@ -68,43 +68,68 @@ function appearAdded(cont1,cont2){
         },2000);  
 }
 
-function addItemToTheCart(itemId){
-    itemsInCart[itemId]++;
-    numberOfItemsInCart++;
+function addItemToTheCart(itemId,selected_item){
+    quantity  =  parseInt(selected_item.value); 
+    itemsInCart[itemId]+=quantity;
+    numberOfItemsInCart+=quantity;
     numOfItemsInCart.innerHTML = `${String(numberOfItemsInCart)}`;
+    
+}
+
+function search(query){
+    filtered_products = [];
+
+    querySize = query.length;
+    query = query.toLowerCase();
+
+    for(index in products){
+
+        currentProductName = products[index].name.toLowerCase();
+        subStringOfProduct = currentProductName.substring(0, querySize);
+        
+        
+        if(subStringOfProduct === query){
+                filtered_products.push(products[index]);
+        }
+
+
+        
+    }
+    setProductsInHtml(filtered_products);
 }
 
 
-function setProductsInHtml(){
+function setProductsInHtml(products_list){
     product_grid.innerHTML = ``;  
     let product_stars_img  = ``;
-    for(let index in products){
-        product_stars_img = getStarImg(products[index].rating.stars);
+
+    for(let index in products_list){
+        product_stars_img = getStarImg(products_list[index].rating.stars);
         product_grid.innerHTML += `
         <div class="product_card">
 
                 <div class="img-container">
-                    <img id="product_img" src=${products[index].image}>
+                    <img id="product_img" src=${products_list[index].image}>
                 </div>
                 
                 <div class="product-name">
-                    ${products[index].name}
+                    ${products_list[index].name}
                 </div>
 
                 <div class="product-rating-container">
                     <img id="product_rating" src="../assest/images/ratings/${product_stars_img}">
 
                     <div class="number-of-reveiws">
-                        ${products[index].rating.count}
+                        ${products_list[index].rating.count}
                     </div>
                 </div>
 
                 <div class="product-price">
-                    $${((products[index].priceCents)/100).toFixed(2)}
+                    $${((products_list[index].priceCents)/100).toFixed(2)}
                 </div>
                 
                 <div class="product-quantity-container">
-                    <select>
+                    <select class="selected-item">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -131,7 +156,7 @@ function setProductsInHtml(){
                                 document.getElementsByClassName('check-mark-image')[${index}],
                                 document.getElementsByClassName('added-text')[${index}]
                             );
-                            addItemToTheCart(${index});
+                            addItemToTheCart(${index},document.getElementsByClassName('selected-item')[${index}]);
                             ">
                             Add to Cart
                             </button>
@@ -142,4 +167,10 @@ function setProductsInHtml(){
     }
 }
 
-setProductsInHtml();
+
+searchBar.addEventListener('input', function(){
+    search(searchBar.value);
+});
+
+
+setProductsInHtml(products);
