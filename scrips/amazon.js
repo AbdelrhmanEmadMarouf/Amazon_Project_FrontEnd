@@ -1,65 +1,3 @@
-const products = [
-  {
-    image: '../assest/images/products/athletic-cotton-socks-6-pairs.jpg',
-    name: 'Black and Gray Athletic Cotton Socks - 6 Pairs',
-    rating: { stars: 4.5, count: 87 },
-    priceCents: 1090
-  },
-  {
-    image: '../assest/images/products/intermediate-composite-basketball.jpg',
-    name: 'Intermediate Size Basketball',
-    rating: { stars: 4, count: 127 },
-    priceCents: 2095
-  },
-  {
-    image: '../assest/images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg',
-    name: 'Adults Plain Cotton T-Shirt - 2 Pack',
-    rating: { stars: 4.5, count: 56 },
-    priceCents: 799
-  },
-  {
-    image: '../assest/images/products/black-2-slot-toaster.jpg',
-    name: '2 Slot Toaster - Black',
-    rating: { stars: 5, count: 2197 },
-    priceCents: 1899
-  },
-  {
-    image: '../assest/images/products/6-piece-white-dinner-plate-set.jpg',
-    name: '6 Piece White Dinner Plate Set',
-    rating: { stars: 4, count: 37 },
-    priceCents: 2067
-  },
-  {
-    image: '../assest/images/products/6-piece-non-stick-baking-set.webp',
-    name: '6-Piece Nonstick, Carbon Steel Oven Bakeware Baking Set',
-    rating: { stars: 4.5, count: 175 },
-    priceCents: 3499
-  },
-  {
-    image: '../assest/images/products/plain-hooded-fleece-sweatshirt-yellow.jpg',
-    name: 'Plain Hooded Fleece Sweatshirt',
-    rating: { stars: 4.5, count: 317 },
-    priceCents: 2400
-  },
-  {
-    image: '../assest/images/products/luxury-tower-set-6-piece.jpg',
-    name: 'Luxury Towel Set - Graphite Gray',
-    rating: { stars: 4.5, count: 144 },
-    priceCents: 3599
-  },
-  {
-    image: '../assest/images/products/liquid-laundry-detergent-plain.jpg',
-    name: 'Liquid Laundry Detergent, 110 Loads, 82.5 Fl Oz',
-    rating: { stars: 4.5, count: 305 },
-    priceCents: 2899
-  },
-  {
-    image: '../assest/images/products/knit-athletic-sneakers-gray.jpg',
-    name: 'Waterproof Knit Athletic Sneakers - Gray',
-    rating: { stars: 4, count: 89 },
-    priceCents: 3390
-  }
-];
 const product_stars_img = [
     'rating-0.png',
     'rating-05.png',
@@ -73,8 +11,12 @@ const product_stars_img = [
     'rating-45.png',
     'rating-50.png',
 ]
-
+const numberOfProducts = products.length;
+const itemsInCart = new Array(numberOfProducts).fill(0);
 const product_grid = document.querySelector('.product-grid');
+const numOfItemsInCart = document.querySelector('#number_of_items_in_cart');
+
+let numberOfItemsInCart = 0 ;
 
 function getStarImg(starsCount){
     if(starsCount === 0){
@@ -111,6 +53,27 @@ function getStarImg(starsCount){
         return product_stars_img[10];
     }
 }
+
+
+let timeOut ;
+function appearAdded(cont1,cont2){
+        if(cont1.hidden === false){
+            clearTimeout(timeOut);
+        }
+        cont1.hidden = false;
+        cont2.hidden = false;
+        timeOut =  setTimeout(function(){
+        cont1.hidden = true;
+        cont2.hidden = true;
+        },2000);  
+}
+
+function addItemToTheCart(itemId){
+    itemsInCart[itemId]++;
+    numberOfItemsInCart++;
+    numOfItemsInCart.innerHTML = `${String(numberOfItemsInCart)}`;
+}
+
 
 function setProductsInHtml(){
     product_grid.innerHTML = ``;  
@@ -156,14 +119,27 @@ function setProductsInHtml(){
                 </div>
 
                 <div class="button-container">
-                    <button class="add-to-card-button">Add To Card</button>
+                    <div class="button-container">
+                        <div class="added-container" >
+                            <img class="check-mark-image" src="../assest/images/icons/checkmark.png" hidden>
+                            <div class="added-text" hidden>
+                                Added
+                            </div>
+                        </div>
+                    <button class="add-to-card-button"
+                            onclick="appearAdded(
+                                document.getElementsByClassName('check-mark-image')[${index}],
+                                document.getElementsByClassName('added-text')[${index}]
+                            );
+                            addItemToTheCart(${index});
+                            ">
+                            Add to Cart
+                            </button>
+
                 </div>
             </div>
         `
     }
 }
 
-
-
 setProductsInHtml();
-console.log('sds');

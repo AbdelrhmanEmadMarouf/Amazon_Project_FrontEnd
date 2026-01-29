@@ -1,10 +1,13 @@
 #header_bar {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 70px;
   background-color: #131921;
   display: flex;
   align-items: center;
-  position: relative;
+  z-index: 1000;
 }
 
 #amazon_logo_in_header {
@@ -61,14 +64,14 @@
 }
 
 #cart_img {
-  width: 60px;
+  width: 70px;
   height: 40px;
 }
 
 #number_of_items_in_cart {
   position: absolute;
   top: 2px;
-  left: 28px;
+  left: 33px;
   color: #f08804;
   font-size: 18px;
   font-weight: 700;
