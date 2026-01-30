@@ -18,6 +18,7 @@
 
         <!-- Links the HTML file with the CSS stylesheet -->
         <link rel="stylesheet" href="../css/checkout page/header.css">
+        <link rel="stylesheet" href="../css/checkout page/body.css">
         
 
 
@@ -40,6 +41,104 @@
         </header>
 
 
+    <main>
+        <div class="checkout-layout">
+            <div class="page-title">Review your order</div>
+            
+            <div class="products-section">
+                <div class="product-container">
+                        <div class="delivery-data">
+                            Delivery date: Tuesday, February 10
+                        </div>
+
+                        <div class="product-data">
+                            <img class="product-img" src="../assest/images/products/athletic-cotton-socks-6-pairs.jpg" alt="product-img">
+
+                            <div>
+                            <div class="product-name">Black and Gray Athletic Cotton Socks - 6 Pairs</div>
+                            <div class="product-price">$10.90</div>
+                            <div class="product-quantity">Quantity 2</div>
+
+
+                            <div class="update-container">
+                                <button class="update-btn" onclick="">Update</button>
+                            </div>
+
+
+                            <button class="delete-btn">Delete</button>
+                            </div>
+
+                            <div class="delivery-order-container">
+                        Choose a delivery option:
+
+
+                            <label class="shipping-option">
+                                <div>
+                                    <div class="shipping-date">Tuesday, February 10</div>
+                                    <div class="shipping-price">FREE Shipping</div>
+                                </div>
+                                <input type="radio" name="shipping" checked>
+                            </label>
+
+                            <label class="shipping-option">
+                                <div>
+                                    <div class="shipping-date">Wednesday, February 4</div>
+                                    <div class="shipping-price">$4.99 - Shipping</div>
+                                </div>
+                                <input type="radio" name="shipping" >
+                            </label>
+
+                            <label class="shipping-option">
+                                <div>
+                                    <div class="shipping-date">Monday, February 2</div>
+                                    <div class="shipping-price">$9.99 - Shipping</div>
+                                </div>
+                                <input type="radio" name="shipping" >
+                            </label>
+                            </div>
+
+                        </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="order-summary">
+                    Order Summary
+
+                    <div>
+                        <span class="items-number">Item(0)</span>
+                        <span class="items-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="delivary-option">Shipping & handling:</span>
+                        <span class="delivary-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="total-before-tax">Total before tax:</span>
+                        <span class="total-before-tax-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="tax">Estimated tax (10%):</span>
+                        <span class="tax-value">$0.00</span>
+                    </div>
+                    <div>
+                        <br>
+                    </div>
+                    <div>
+                        <span class="total">Order total:</span>
+                        <span class="total-price">$0.00</span>
+                    </div>
+
+                    <button class="place-order-btn">
+                        Place Your Order
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+        
+        <script src="../scrips/main page/products.js"></script>
         <script src="../scrips/check out page/checkout.js"></script>
     </body>
 </html>
