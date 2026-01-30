@@ -73,7 +73,6 @@ function addItemToTheCart(itemId,selected_item){
     itemsInCart[itemId]+=quantity;
     numberOfItemsInCart+=quantity;
     numOfItemsInCart.innerHTML = `${String(numberOfItemsInCart)}`;
-    console.log(itemsInCart);
     storeCartItemsIntoLocalStorage();
     
 }
