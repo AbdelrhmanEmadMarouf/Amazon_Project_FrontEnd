@@ -6,6 +6,8 @@ const totalShipingElement = document.querySelector('.delivary-price');
 const totalBeforeTaxElement = document.querySelector('.total-before-tax-price');
 const taxElement = document.querySelector('.tax-value');
 const totalPriceElement = document.querySelector('.total-price');
+const place_order_btn = document.querySelector('.place-order-btn');
+
 
 
 
@@ -15,7 +17,12 @@ let numberOfItemsInCart = 0 ;
 let numberOfProductsInPage = 0 ;
 
 
+let ordersList = [];
+let orderList = [];
 
+
+
+place_order_btn.addEventListener('click',function(){createOrder()});
 
 
 function getDataAfterDays(days) {
@@ -107,6 +114,109 @@ function update_cart_items(){
     initialization();
 }
 
+function getArriveData(index){
+            const firstRadio = document.getElementsByClassName('first-radio')[index];
+            const secondRadio = document.getElementsByClassName('second-radio')[index];
+            const thirdRadio = document.getElementsByClassName('third-radio')[index];
+
+            const firstShippingData = document.getElementsByClassName('shipping-date1')[index];
+            const secondShippingData = document.getElementsByClassName('shipping-date2')[index];
+            const thirdShippingData = document.getElementsByClassName('shipping-date3')[index];
+
+
+            if (firstRadio.checked){
+                return firstShippingData.innerHTML;
+            }
+            
+            if (secondRadio.checked){
+                return secondShippingData.innerHTML;
+            }
+
+
+            
+            
+            return thirdShippingData.innerHTML;
+            
+
+}
+
+
+function make_page_empty(){
+        localStorage.removeItem('products_in_cart');  
+        itemsInCart = [];
+        initialization();
+    }
+
+function createOrder(){
+    
+    
+
+
+    for(let i=0; i<numberOfProductsInPage; i++){
+
+        const productIndexElement = document.getElementsByClassName('index-in-products')[i];
+
+
+        let productIndex = parseInt(productIndexElement.innerHTML);
+        let theArriveData = getArriveData(i);
+        let productQuantity = itemsInCart[productIndex];
+
+        const product = {
+            index : productIndex ,
+            quantity : productQuantity ,
+            arriveData : theArriveData
+        };
+
+        orderList.push(product);
+    }
+
+        const orderListInObject = arrayToObject(orderList);
+
+        
+
+        ordersList.push(orderListInObject);
+
+        const ordersListInObject = arrayToObject(ordersList);
+
+
+        const odrersListInJson = JSON.stringify(ordersListInObject);
+
+        localStorage.setItem('orders',odrersListInJson);
+
+        make_page_empty();
+
+
+}
+
+function arrayToObject(arr){
+
+    //* transfer Array into Object
+    const obj = arr.reduce((myObj, currentItemInArray, index) => {
+    myObj[index] = currentItemInArray;
+    return myObj;
+    }, {});
+
+    return obj;
+    
+}
+
+function getOrdersFromLocalStorage(){
+    //* get Json from local storage
+    const objectInJson = localStorage.getItem('orders');
+    
+    
+
+    if(objectInJson === null) return [];
+
+    //* transfer json into object
+    const obj = JSON.parse(objectInJson);
+
+    //* transfer object into array
+    const arr = Object.values(obj);
+
+    return arr;
+}
+
 
 function update_the_data_of_product(index,data){
     const productData = document.getElementsByClassName('delivery-data')[index];
@@ -173,6 +283,7 @@ function setProductsInHtml(){
         html +=`
         <div class="product-container">
 
+                <div class="index-in-products" hidden>${index}</div>
 
                 <div class="delivery-data">
                     Delivery date: ${getDataAfterDays(10)}
@@ -215,7 +326,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date">${getDataAfterDays(10)}</div>
+                            <div class="shipping-date1">${getDataAfterDays(10)}</div>
                             <div class="shipping-price">FREE Shipping</div>
                         </div>
                         <input class="first-radio" type="radio" name="shipping-${itemNumber}" checked onclick="
@@ -225,7 +336,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date">${getDataAfterDays(4)}</div>
+                            <div class="shipping-date2">${getDataAfterDays(4)}</div>
                             <div class="shipping-price">$4.99 - Shipping</div>
                         </div>
                         <input class="second-radio" type="radio" name="shipping-${itemNumber}" onclick="
@@ -235,7 +346,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date">${getDataAfterDays(2)}</div>
+                            <div class="shipping-date3">${getDataAfterDays(2)}</div>
                             <div class="shipping-price">$9.99 - Shipping</div>
                         </div>
                         <input class="third-radio" type="radio" name="shipping-${itemNumber}" onclick="
@@ -277,11 +388,53 @@ function update_order_summary(){
 
 }
 
+function reset_order_summary(){
+    const orderSummarySection = document.querySelector('.summary-section');
+
+    orderSummarySection.innerHTML = `                <div class="order-summary">
+                    Order Summary
+
+                    <div>
+                        <span class="items-number">Item(0)</span>
+                        <span class="items-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="delivary-option">Shipping & handling:</span>
+                        <span class="delivary-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="total-before-tax">Total before tax:</span>
+                        <span class="total-before-tax-price">$0.00</span>
+                    </div>
+                    <div>
+                        <span class="tax">Estimated tax (10%):</span>
+                        <span class="tax-value">$0.00</span>
+                    </div>
+                    <div>
+                        <br>
+                    </div>
+                    <div>
+                        <span class="total">Order total:</span>
+                        <span class="total-price">$0.00</span>
+                    </div>
+
+                    <button class="place-order-btn">
+                        Place Your Order
+                    </button>
+                </div>`;
+
+}
+
 function initialization(){
     itemsInCart = getProductCartsFromLocalStorage();
+    ordersList = getOrdersFromLocalStorage();
     numberOfItemsInCart = getNumberOfItemsInCart(itemsInCart);
     numberOfItems.innerHTML = `(${numberOfItemsInCart} item)`;
     setProductsInHtml();
+    if(itemsInCart.length ===0) {
+        reset_order_summary();
+        return;
+    }
     update_order_summary();
     calculate_items_price()
 }
