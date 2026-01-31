@@ -164,7 +164,9 @@ function createOrder(){
         const product = {
             index : productIndex ,
             quantity : productQuantity ,
-            arriveData : theArriveData
+            arriveData : theArriveData,
+            placed_Data : getDataAfterDays(0),
+            total_price_of_order : getToalPriceOfOrder()
         };
 
         orderList.push(product);
@@ -186,6 +188,10 @@ function createOrder(){
         make_page_empty();
 
 
+}
+
+function getToalPriceOfOrder(){
+    return  totalPriceElement.innerHTML;
 }
 
 function arrayToObject(arr){
@@ -369,6 +375,11 @@ function setProductsInHtml(){
 }
 
 function update_order_summary(){
+
+    const place_order_button = document.querySelector('.place-order-btn');
+    place_order_button.disabled = false;
+
+
     items_number.innerHTML = `items(${numberOfItemsInCart})`;
     let totalItemsPrice  = calculate_items_price();
     let totalShipping    = calculate_total_shipping();
@@ -418,7 +429,7 @@ function reset_order_summary(){
                         <span class="total-price">$0.00</span>
                     </div>
 
-                    <button class="place-order-btn">
+                    <button class="place-order-btn" disabled>
                         Place Your Order
                     </button>
                 </div>`;

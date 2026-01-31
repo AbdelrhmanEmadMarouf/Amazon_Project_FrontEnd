@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+main {
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;   
+    align-items: flex-start;   
+    padding-top: 140px;        
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #f6f7f8;
+}
+
+
+body {
+    background-color: #f6f7f8;
+    color: #0f1111;
+}
+
+
+.product-details {
+    max-width: 520px;
+    background-color: #ffffff;
+    border: 1px solid #d5d9d9;
+    border-radius: 12px;
+    padding: 20px 22px 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.arriving-date {
+    font-size: 14px;
+    font-weight: 700;
+    color: #007600;
+    margin-bottom: 2px;
+}
+
+
+.product-name {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #0f1111;
+}
+
+
+.product-quantity {
+    font-size: 14px;
+    color: #565959;
+    margin-bottom: 12px;
+}
+
+
+.product-img-container {
+    width: 100%;
+    background-color: #f7f8f8;
+    border-radius: 10px;
+    padding: 14px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.product-img {
+    max-width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+}
+
+
+.order-status {
+    max-width: 900px;
+    margin: 10px auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.status-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.status-labels span {
+    color: #000;
+}
+
+.status-labels .active {
+    color: #007600; 
+    font-weight: 700;
+}
+
+
+.progress-bar {
+    width: 100%;
+    height: 26px;
+    background-color: #ffffff;
+    border: 1px solid #d5d9d9;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 33%; /* Preparing = 33% */
+    background-color: #007600;
+    border-radius: 999px;
+}

@@ -40,7 +40,8 @@
 
 
 #return_orders_icon{
-    margin-left: 55px;
+    margin-left: 45px;
+    margin-right: 7px;
 }
 
 
@@ -94,4 +95,9 @@ a {
 #cart_text:hover {
   outline: 1px solid #ffffff;
   outline-offset: 6px;
+}
+
+#return_orders_icon:hover{
+  outline: 1px solid #ffffff;
+  outline-offset: 1px;
 }

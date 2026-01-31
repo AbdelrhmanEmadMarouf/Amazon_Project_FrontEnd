@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Orders</title>
+        <!-- Defines the character encoding (supports Arabic and special characters) -->
+        <meta charset="UTF-8">
+        <!-- Makes the website responsive on mobile and different screen sizes -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Page description for SEO and social media preview -->
+        <meta name="description" content="E-commerce web application built with HTML, CSS, and JavaScript">
+
+        <!-- Loads Google Fonts to be used later in CSS -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+        <!-- Links the HTML file with the CSS stylesheet -->
+        <link rel="stylesheet" href="../css/orders/header.css">
+        <link rel="stylesheet" href="../css/orders/body.css">
+
+    </head>
+    <body>
+
+        <header id="header_bar">
+            <a href="amazon.html">
+            <img id="amazon_logo_in_header" src="../assest/images/amazon-logo-white.png" alt="Amazon Logo">
+            </a>
+
+            <div class="your-orders-test">
+                Your Orders
+            </div>
+
+            <a href="orders.html">
+                <img id="return_orders_icon" src="../assest/images/return&orders_img.png">
+            </a>
+
+
+    
+        <a href="checkout.html">
+            <div class="cart_container">
+                    <span id="number_of_items_in_cart">0</span>
+                    <img id="cart_img" src="../assest/images/icons/cart-icon.png">
+            </div>
+            <a href="checkout.html">
+                <span id="cart_text">Cart</span>
+            </a>
+        </a>
+
+        </header>
+
+        <main class="main">
+            <div class="order-section">
+
+                <div class="order-header">
+
+                    <div class="order-date">
+                        Order Placed : January 31
+                    </div>
+
+                    <div class="order-price">
+                        Total : $132.91
+                    </div>
+
+
+                </div>
+
+
+                <div class="order-body">
+
+                    <div class="products-container">
+
+                        <div class="product-details">
+
+                            <div class="img-container">
+                                <img class="product-img" src="../assest/images/products/6-piece-non-stick-baking-set.webp">
+                            </div>
+
+
+                            <div class="product-data">
+
+                                <div class="product-name">
+                                    Black and Gray Athletic Cotton Socks - 6 Pairs
+                                </div>
+
+                                <div class="product-arriving-data">
+                                    Arriving on: February 4
+                                </div>
+
+                                <div class="product-quantity">
+                                    Quantity: 1
+                                </div>
+
+                                <div class="buy-button-container">
+                                    <button class="buy-btn">
+                                        Buy It Again
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="track-package-container">
+                                <button class="track-button">
+                                    Track Package
+                                </button>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </main>
+
+        <script src="../scrips/main page/products.js"></script>
+        <script src="../scrips/orders/orders.js"></script>
+    </body>
+</html>

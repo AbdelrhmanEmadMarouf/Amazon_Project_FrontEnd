@@ -1,0 +1,151 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #ffffff;
+    color: #0f1111;
+}
+
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 120px 20px 40px;
+}
+
+
+.order-section {
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    background-color: #ffffff;
+    overflow: hidden;
+    margin-top: 50px;
+    
+}
+
+
+.order-header {
+    background-color: #f0f2f2;
+    padding: 18px 24px;
+    display: flex;
+    gap: 80px;
+    border-bottom: 1px solid #d5d9d9;
+}
+
+.order-date,
+.order-price {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.order-body {
+    padding: 24px;
+}
+
+
+.product-container {
+    border: 1px solid #d5d9d9;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+
+.delivery-data {
+    color: #007600;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+
+.product-details {
+    display: flex;
+    align-items: stretch;   
+    gap: 30px;
+}
+
+
+.img-container {
+    width: 120px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.product-img {
+    width: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+
+.product-data {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.product-arriving-data {
+    font-size: 14px;
+    color: #565959;
+    margin-bottom: 4px;
+}
+
+.product-quantity {
+    font-size: 14px;
+    color: #0f1111;
+    margin-bottom: 14px;
+}
+
+
+.buy-btn {
+    width: fit-content;
+    background-color: #ffd814;
+    border: 1px solid #fcd200;
+    color: #0f1111;
+    font-size: 14px;
+    padding: 8px 22px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.buy-btn:hover {
+    background-color: #f7ca00;
+}
+
+
+.track-package-container {
+    min-width: 200px;
+    display: flex;
+    align-items: flex-end;     
+    justify-content: center;    
+
+}
+
+
+.track-button {
+    background-color: #ffffff;
+    border: 1px solid #d5d9d9;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.track-button:hover {
+    background-color: #f7fafa;
+}
