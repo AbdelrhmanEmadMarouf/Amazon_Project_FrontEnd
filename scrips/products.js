@@ -1,4 +1,4 @@
-const products = [
+export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "../assest/images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -603,3 +603,60 @@ const products = [
     ]
   }
 ];
+
+
+export const product_stars_img = [
+    'rating-0.png',
+    'rating-05.png',
+    'rating-10.png',
+    'rating-15.png',
+    'rating-20.png',
+    'rating-25.png',
+    'rating-30.png',
+    'rating-35.png',
+    'rating-40.png',
+    'rating-45.png',
+    'rating-50.png',
+];
+
+
+
+export function getStarImg(starsCount){
+    if(starsCount === 0){
+        return product_stars_img[0];
+    }
+    if(starsCount === 0.5){
+        return product_stars_img[1];
+    }
+    if(starsCount === 1){
+        return product_stars_img[2];
+    }
+    if(starsCount === 1.5){
+        return product_stars_img[3];
+    }
+    if(starsCount === 2){
+        return product_stars_img[4];
+    }
+    if(starsCount === 2.5){
+        return product_stars_img[5];
+    }
+    if(starsCount === 3){
+        return product_stars_img[6];
+    }
+    if(starsCount === 3.5){
+        return product_stars_img[7];
+    }
+    if(starsCount === 4){
+        return product_stars_img[8];
+    }
+    if(starsCount === 4.5){
+        return product_stars_img[9];
+    }
+    if(starsCount === 5){
+        return product_stars_img[10];
+    }
+}
+
+
+
+export const productsSize = products.length;

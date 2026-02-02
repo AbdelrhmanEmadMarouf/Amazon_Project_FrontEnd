@@ -1,81 +1,55 @@
-const product_stars_img = [
-    'rating-0.png',
-    'rating-05.png',
-    'rating-10.png',
-    'rating-15.png',
-    'rating-20.png',
-    'rating-25.png',
-    'rating-30.png',
-    'rating-35.png',
-    'rating-40.png',
-    'rating-45.png',
-    'rating-50.png',
-]
-const numberOfProducts = products.length;
-let itemsInCart = new Array(numberOfProducts).fill(0);
+import {products} from '../products.js';
+import { getStarImg } from '../products.js';
+import { loadCartFromLocalStorage } from '../carts.js';
+import {addItemToTheCart} from '../carts.js';
+
 const product_grid = document.querySelector('.product-grid');
-const numOfItemsInCart = document.querySelector('#number_of_items_in_cart');
 const searchBar = document.getElementById('search');
-let numberOfItemsInCart = 0 ;
-
-function getStarImg(starsCount){
-    if(starsCount === 0){
-        return product_stars_img[0];
-    }
-    if(starsCount === 0.5){
-        return product_stars_img[1];
-    }
-    if(starsCount === 1){
-        return product_stars_img[2];
-    }
-    if(starsCount === 1.5){
-        return product_stars_img[3];
-    }
-    if(starsCount === 2){
-        return product_stars_img[4];
-    }
-    if(starsCount === 2.5){
-        return product_stars_img[5];
-    }
-    if(starsCount === 3){
-        return product_stars_img[6];
-    }
-    if(starsCount === 3.5){
-        return product_stars_img[7];
-    }
-    if(starsCount === 4){
-        return product_stars_img[8];
-    }
-    if(starsCount === 4.5){
-        return product_stars_img[9];
-    }
-    if(starsCount === 5){
-        return product_stars_img[10];
-    }
-}
-
 
 let timeOut ;
-function appearAdded(cont1,cont2){
-        if(cont1.hidden === false){
+
+
+
+function setAddToCartButton(){
+
+    document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+
+        button.addEventListener('click',()=>{
+
+        
+
+        const index = button.dataset.index;
+
+        const checkMarkElement =  document.getElementsByClassName('check-mark-image')[index];
+        const addedTextElement =  document.getElementsByClassName('added-text')[index];
+
+        const ProductQuantityElement = document.getElementsByClassName('product-quantity')[index];
+
+        const quantity = parseInt(ProductQuantityElement.value);
+
+        appearAdded(checkMarkElement,addedTextElement);
+
+
+        addItemToTheCart(index,quantity);
+            
+
+    });
+
+});
+}
+
+function appearAdded(checkMarkElement,addedTextElement){
+        if(checkMarkElement.hidden === false){
             clearTimeout(timeOut);
         }
-        cont1.hidden = false;
-        cont2.hidden = false;
+        checkMarkElement.hidden = false;
+        addedTextElement.hidden = false;
         timeOut =  setTimeout(function(){
-        cont1.hidden = true;
-        cont2.hidden = true;
+        checkMarkElement.hidden = true;
+        addedTextElement.hidden = true;
         },2000);  
 }
 
-function addItemToTheCart(itemId,selected_item){
-    quantity  =  parseInt(selected_item.value); 
-    itemsInCart[itemId]+=quantity;
-    numberOfItemsInCart+=quantity;
-    numOfItemsInCart.innerHTML = `${String(numberOfItemsInCart)}`;
-    storeCartItemsIntoLocalStorage();
-    
-}
 
 function search(query){
     filtered_products = [];
@@ -130,7 +104,7 @@ function setProductsInHtml(products_list){
                 </div>
                 
                 <div class="product-quantity-container">
-                    <select class="selected-item">
+                    <select class="product-quantity">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -152,75 +126,25 @@ function setProductsInHtml(products_list){
                                 Added
                             </div>
                         </div>
-                    <button class="add-to-card-button"
-                            onclick="appearAdded(
-                                document.getElementsByClassName('check-mark-image')[${index}],
-                                document.getElementsByClassName('added-text')[${index}]
-                            );
-                            addItemToTheCart(${index},document.getElementsByClassName('selected-item')[${index}]);
-                            ">
+
+                        <<button class="add-to-card-button js-add-to-cart" data-index="${index}">
                             Add to Cart
-                            </button>
+                        </button>
 
                 </div>
             </div>
-        `
-    }
-}
-
-function storeCartItemsIntoLocalStorage(){
-
-    //* transfer Array into Object
-    const obj = itemsInCart.reduce((myObj, currentItemInArray, index) => {
-    myObj[index] = currentItemInArray;
-    return myObj;
-    }, {});
-
-    //*transfer Object into Json
-    const objectInJson = JSON.stringify(obj);
-
-
-    localStorage.setItem('products_in_cart',objectInJson);
-}
-
-
-function getProductCartsFromLocalStorage(){
-
-    //* get Json from local storage
-    const objectInJson = localStorage.getItem('products_in_cart');
-    
-    if(objectInJson === null) return itemsInCart ;
-
-    //* transfer json into object
-    const obj = JSON.parse(objectInJson);
-
-    //* transfer object into array
-    const arr = Object.values(obj);
-
-    return arr;
-    
-}
-
-function getNumberOfItemsInCart(arr){
-    let cnt = 0;
-    for(index in arr){
-        if(arr[index] !== 0){
-            cnt+=arr[index];
-        }
+        `;
     }
 
-    return cnt;
+        setAddToCartButton();
+
 }
+
 
 function initialization(){
     setProductsInHtml(products);
-    itemsInCart = getProductCartsFromLocalStorage();
-    numberOfItemsInCart = getNumberOfItemsInCart(itemsInCart);
-    numOfItemsInCart.innerHTML = `${String(numberOfItemsInCart)}`;
-
+    loadCartFromLocalStorage('amazon.js');
 }
-
-
 
 
 searchBar.addEventListener('input', function(){
@@ -228,6 +152,5 @@ searchBar.addEventListener('input', function(){
 });
 
 
-getProductCartsFromLocalStorage();
 
 initialization();

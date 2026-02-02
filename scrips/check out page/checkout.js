@@ -1,4 +1,13 @@
-const numberOfItems = document.querySelector('.item-numbers');
+import { itemsCartList } from "../carts.js";
+import { cartSize } from "../carts.js";
+import { loadCartFromLocalStorage } from "../carts.js";
+import { loadOrdersFromLocalStorage } from "../orders.js";
+import { products } from "../products.js";
+import { storeOrdersInLocalStorage } from "../orders.js";
+import { resertCart } from "../carts.js";
+import {storeCartItemsIntoLocalStorage} from "../carts.js";
+
+
 const productContainer = document.querySelector('.product-container');
 const items_price = document.querySelector('.items-price');
 const items_number = document.querySelector('.items-number');
@@ -11,18 +20,11 @@ const place_order_btn = document.querySelector('.place-order-btn');
 
 
 
-
-let itemsInCart = [];
-let numberOfItemsInCart = 0 ;
 let numberOfProductsInPage = 0 ;
 
 
-let ordersList = [];
-let orderList = [];
 
-
-
-place_order_btn.addEventListener('click',function(){createOrder()});
+place_order_btn.addEventListener('click',createOrder);
 
 
 function getDataAfterDays(days) {
@@ -34,40 +36,28 @@ function getDataAfterDays(days) {
 
 }
 
-function getProductCartsFromLocalStorage(){
+function setUpdateButton(){ 
+    document.querySelectorAll('.update-btn').forEach((updateBtn)=>{
+            
+    const pageIndex = updateBtn.dataset.page_index;
+    const product_Index = updateBtn.dataset.product_index;
 
-    //* get Json from local storage
-    const objectInJson = localStorage.getItem('products_in_cart');
-    
-    if(objectInJson === null) return itemsInCart ;
-
-    //* transfer json into object
-    const obj = JSON.parse(objectInJson);
-
-    //* transfer object into array
-    const arr = Object.values(obj);
-
-    return arr;
+    const quantityInput = document.getElementsByClassName('quantity-input')[pageIndex];
+    const saveBtn       = document.getElementsByClassName('save-btn')[pageIndex];
+    const deleteBtn     = document.getElementsByClassName('delete-btn')[pageIndex];
+            
+    updateBtn.addEventListener('click',() =>{updateHtmlButton(updateBtn,saveBtn,quantityInput,product_Index)});
+    saveBtn.addEventListener('click',() =>{updateHtmlButton(updateBtn,saveBtn,quantityInput,product_Index)});
+    deleteBtn.addEventListener('click',()=>{
+        itemsCartList[product_Index] = 0;
+        update_cart_items();
+    })
+    });
     
 }
 
-function getNumberOfItemsInCart(arr){
-    let cnt = 0;
-    for(index in arr){
-        if(arr[index] !== 0){
-            cnt+=arr[index];
-        }
-    }
+function updateHtmlButton(updateBtn,saveBtn,quantityInput,product_Index){ 
 
-    return cnt;
-}
-
-function updateHtmlButton(index_of_product_in_page,index_in_product_in_arr){ 
-
-
-    const updateBtn = document.getElementsByClassName('update-btn')[index_of_product_in_page];
-    const quantityInput = document.getElementsByClassName('quantity-input')[index_of_product_in_page];
-    const saveBtn = document.getElementsByClassName('save-btn')[index_of_product_in_page];
 
     if(updateBtn.hidden){
         //*save new quantity
@@ -77,7 +67,7 @@ function updateHtmlButton(index_of_product_in_page,index_in_product_in_arr){
 
         let newQuantity = parseInt(quantityInput.value);
         
-        itemsInCart[index_in_product_in_arr] = newQuantity;
+        itemsCartList[product_Index] = newQuantity;
         update_cart_items();
 
     }else{
@@ -89,25 +79,40 @@ function updateHtmlButton(index_of_product_in_page,index_in_product_in_arr){
 
 }
 
-function deleteItem(index_in_product_in_arr){
-        itemsInCart[index_in_product_in_arr] = 0;
-        update_cart_items();
+
+function setRadioButtons(){
+
+    document.querySelectorAll('.delivery-order-container').forEach((container)=>{
+
+        const pageIndex = container.dataset.page_index;
+        
+
+        const radioBtn1 = document.getElementsByClassName('first-radio')[pageIndex];
+        const radioBtn2 = document.getElementsByClassName('second-radio')[pageIndex];
+        const radioBtn3 = document.getElementsByClassName('third-radio')[pageIndex];
+        const productDate = document.getElementsByClassName('delivery-data')[pageIndex];
+
+
+
+        radioBtn1.addEventListener('click',()=>{  
+            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(10);
+            update_order_summary();
+            });
+
+        radioBtn2.addEventListener('click',()=>{ 
+            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(4);
+            update_order_summary();
+            });
+
+        radioBtn3.addEventListener('click',()=>{ 
+            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(2);
+            update_order_summary();
+            });
+
+
+    });
 }
 
-function storeCartItemsIntoLocalStorage(){
-
-    //* transfer Array into Object
-    const obj = itemsInCart.reduce((myObj, currentItemInArray, index) => {
-    myObj[index] = currentItemInArray;
-    return myObj;
-    }, {});
-
-    //*transfer Object into Json
-    const objectInJson = JSON.stringify(obj);
-
-
-    localStorage.setItem('products_in_cart',objectInJson);
-}
 
 function update_cart_items(){
     storeCartItemsIntoLocalStorage();
@@ -141,15 +146,10 @@ function getArriveData(index){
 }
 
 
-function make_page_empty(){
-        localStorage.removeItem('products_in_cart');  
-        itemsInCart = [];
-        initialization();
-    }
 
 function createOrder(){
     
-    
+    let orderList = [];
 
 
     for(let i=0; i<numberOfProductsInPage; i++){
@@ -159,8 +159,8 @@ function createOrder(){
 
         let productIndex = parseInt(productIndexElement.innerHTML);
         let theArriveData = getArriveData(i);
-        let productQuantity = itemsInCart[productIndex];
-
+        let productQuantity = itemsCartList[productIndex];
+        
         const product = {
             index : productIndex ,
             quantity : productQuantity ,
@@ -168,25 +168,20 @@ function createOrder(){
             placed_Data : getDataAfterDays(0),
             total_price_of_order : getToalPriceOfOrder()
         };
-
+        
         orderList.push(product);
+        
     }
 
         const orderListInObject = arrayToObject(orderList);
-
         
 
-        ordersList.push(orderListInObject);
+        storeOrdersInLocalStorage(orderListInObject);
+        
 
-        const ordersListInObject = arrayToObject(ordersList);
 
-
-        const odrersListInJson = JSON.stringify(ordersListInObject);
-
-        localStorage.setItem('orders',odrersListInJson);
-
-        make_page_empty();
-
+        resertCart();
+        initialization();
 
 }
 
@@ -206,42 +201,19 @@ function arrayToObject(arr){
     
 }
 
-function getOrdersFromLocalStorage(){
-    //* get Json from local storage
-    const objectInJson = localStorage.getItem('orders');
-    
-    
-
-    if(objectInJson === null) return [];
-
-    //* transfer json into object
-    const obj = JSON.parse(objectInJson);
-
-    //* transfer object into array
-    const arr = Object.values(obj);
-
-    return arr;
-}
-
-
-function update_the_data_of_product(index,data){
-    const productData = document.getElementsByClassName('delivery-data')[index];
-    productData.innerHTML = 'Delivery date : '+data;
-    update_order_summary();
-}
 
 function calculate_items_price(){
     let total = 0;
 
-    for(index in products){
-        if(itemsInCart[index] === 0 ) continue;
+    for(let index in products){
+        if(itemsCartList[index] === 0 ) continue;
         
-        let productQuantity = itemsInCart[index];
+        let productQuantity = itemsCartList[index];
         let productValue = products[index].priceCents;
         total+=( productValue*productQuantity);
     }
 
-    totalPrice = (total/100).toFixed(2);
+    let totalPrice = (total/100).toFixed(2);
     items_price.innerHTML = `$${totalPrice}`;
     return total;
 }
@@ -265,7 +237,7 @@ function calculate_total_shipping(){
             
         }
 
-    totalShipping = (total/100).toFixed(2);
+    let totalShipping = (total/100).toFixed(2);
     totalShipingElement.innerHTML = `$${totalShipping}`;
     return total;
 }
@@ -278,11 +250,12 @@ function setProductsInHtml(){
     let itemNumber = 0;
 
 
-    if(itemsInCart.length ===0) return;
+    if(itemsCartList.length ===0) return;
 
-    for(index in products){
+    for(let index in products){
 
-        if(itemsInCart[index] ===0) 
+
+        if(itemsCartList[index] ===0) 
             continue;
         
 
@@ -301,32 +274,28 @@ function setProductsInHtml(){
                     <div>
                         <div class="product-name">${products[index].name}</div>
                         <div class="product-price">$${((products[index].priceCents)/100).toFixed(2)}</div>
-                        <div class="product-quantity">Quantity ${itemsInCart[index]}</div>
+                        <div class="product-quantity">Quantity ${itemsCartList[index]}</div>
 
                     <div class="update-container">
 
                     <div class="updated-case">
-                        <button class="update-btn" onclick="
-                            updateHtmlButton(${itemNumber},${index});
+                        <button class="update-btn" data-page_index="${itemNumber}" data-product_index="${index}" onclick="
+                            
                         ">Update</button>
                     </div>
 
                     <div class="save-case" >
                             <input class="quantity-input" type="number" min="1" hidden/>
-                            <button class="save-btn"  onclick="
-                                updateHtmlButton(${itemNumber},${index});
-                            " hidden>Save</button>
+                            <button class="save-btn" hidden>Save</button>
                     </div>
 
                     </div>  
 
-                    <button class="delete-btn" onclick="
-                        deleteItem(${index});
-                    ">Delete</button>
+                    <button class="delete-btn">Delete</button>
 
                     </div>
 
-                    <div class="delivery-order-container">
+                    <div class="delivery-order-container" data-page_index="${itemNumber}">
                 
 
 
@@ -335,9 +304,7 @@ function setProductsInHtml(){
                             <div class="shipping-date1">${getDataAfterDays(10)}</div>
                             <div class="shipping-price">FREE Shipping</div>
                         </div>
-                        <input class="first-radio" type="radio" name="shipping-${itemNumber}" checked onclick="
-                            update_the_data_of_product(${itemNumber},'${getDataAfterDays(10)}'); 
-                        ">
+                        <input class="first-radio" type="radio"  name="shipping-${itemNumber}" >
                     </label>
 
                     <label class="shipping-option">
@@ -345,9 +312,7 @@ function setProductsInHtml(){
                             <div class="shipping-date2">${getDataAfterDays(4)}</div>
                             <div class="shipping-price">$4.99 - Shipping</div>
                         </div>
-                        <input class="second-radio" type="radio" name="shipping-${itemNumber}" onclick="
-                            update_the_data_of_product(${itemNumber},'${getDataAfterDays(4)}'); 
-                        ">
+                        <input class="second-radio" type="radio" name="shipping-${itemNumber}">
                     </label>
 
                     <label class="shipping-option">
@@ -355,9 +320,7 @@ function setProductsInHtml(){
                             <div class="shipping-date3">${getDataAfterDays(2)}</div>
                             <div class="shipping-price">$9.99 - Shipping</div>
                         </div>
-                        <input class="third-radio" type="radio" name="shipping-${itemNumber}" onclick="
-                            update_the_data_of_product(${itemNumber},'${getDataAfterDays(2)}'); 
-                        ">
+                        <input class="third-radio" type="radio" name="shipping-${itemNumber}">
                     </label>
                 </div>
 
@@ -368,19 +331,24 @@ function setProductsInHtml(){
         itemNumber++;
     }
 
+    
+    
     numberOfProductsInPage = itemNumber;
-
     productContainer.innerHTML = html;
+    setUpdateButton();
+    setRadioButtons();
 
 }
 
 function update_order_summary(){
 
+    
+
     const place_order_button = document.querySelector('.place-order-btn');
     place_order_button.disabled = false;
 
 
-    items_number.innerHTML = `items(${numberOfItemsInCart})`;
+    items_number.innerHTML = `items(${cartSize})`;
     let totalItemsPrice  = calculate_items_price();
     let totalShipping    = calculate_total_shipping();
     let totalBeforeTax  = totalItemsPrice + totalShipping ;
@@ -401,8 +369,7 @@ function update_order_summary(){
 
 function reset_order_summary(){
     const orderSummarySection = document.querySelector('.summary-section');
-
-    orderSummarySection.innerHTML = `                <div class="order-summary">
+    orderSummarySection.innerHTML = `<div class="order-summary">
                     Order Summary
 
                     <div>
@@ -437,19 +404,17 @@ function reset_order_summary(){
 }
 
 function initialization(){
-    itemsInCart = getProductCartsFromLocalStorage();
-    ordersList = getOrdersFromLocalStorage();
-    numberOfItemsInCart = getNumberOfItemsInCart(itemsInCart);
-    numberOfItems.innerHTML = `(${numberOfItemsInCart} item)`;
+    loadCartFromLocalStorage('checkout.js');
+    loadOrdersFromLocalStorage();
     setProductsInHtml();
-    if(itemsInCart.length ===0) {
+
+    if(cartSize ===0) {
         reset_order_summary();
         return;
     }
     update_order_summary();
     calculate_items_price()
 }
-
 
 
 initialization();

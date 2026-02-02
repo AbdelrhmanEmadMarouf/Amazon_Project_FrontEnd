@@ -1,59 +1,10 @@
-const numberOfItems = document.querySelector('#number_of_items_in_cart');
+import { products } from "../products.js";
+import { ordersList } from "../orders.js";
+import { loadCartFromLocalStorage } from "../carts.js";
+import { loadOrdersFromLocalStorage } from "../orders.js";
+import { addItemToTheCart } from "../carts.js";
+
 const mainElement = document.querySelector('.main');
-let numberOfItemsInCart = 0 ;
-
-let itemsInCart =[];
-let ordersList = [];
-let order = [];
-
-
-
-
-function getProductCartsFromLocalStorage(){
-
-    //* get Json from local storage
-    const objectInJson = localStorage.getItem('products_in_cart');
-    
-    if(objectInJson === null) return [] ;
-
-    //* transfer json into object
-    const obj = JSON.parse(objectInJson);
-
-    //* transfer object into array
-    const arr = Object.values(obj);
-
-    return arr;
-    
-}
-
-function getNumberOfItemsInCart(arr){
-    let cnt = 0;
-    for(index in arr){
-        if(arr[index] !== 0){
-            cnt+=arr[index];
-        }
-    }
-
-    return cnt;
-}
-
-
-function getOrdersFromLocalStorage(){
-    //* get Json from local storage
-    const objectInJson = localStorage.getItem('orders');
-    
-    
-
-    if(objectInJson === null) return [];
-
-    //* transfer json into object
-    const obj = JSON.parse(objectInJson);
-
-    //* transfer object into array
-    const arr = Object.values(obj);
-
-    return arr;
-}
 
 function objectToArray(obj){
     //* transfer object into array
@@ -62,41 +13,43 @@ function objectToArray(obj){
     return arr;
 }
 
-function storeCartItemsIntoLocalStorage(){
+function setBuyAgainButton(){
+    document.querySelectorAll('.buy-btn').forEach((btn)=>{
 
-    //* transfer Array into Object
-    const obj = itemsInCart.reduce((myObj, currentItemInArray, index) => {
-    myObj[index] = currentItemInArray;
-    return myObj;
-    }, {});
+        btn.addEventListener('click',()=>{
 
-    //*transfer Object into Json
-    const objectInJson = JSON.stringify(obj);
+        const productIndex = btn.dataset.product_index;
+        addItemToTheCart(productIndex,1);
+        initialization();
+        })
 
 
-    localStorage.setItem('products_in_cart',objectInJson);
+    });
 }
 
-function buyOrderAgain(index){
-    itemsInCart[index]++;
-    storeCartItemsIntoLocalStorage();
-    initialization();
+function setTrackButton(){
+    document.querySelectorAll('.track-button').forEach((btn)=>{
+        btn.addEventListener('click',()=>{
+            const encodedProductInJson = btn.dataset.objectInJson;
+            const decodedProductInJson = decodeURIComponent(encodedProductInJson);
+            goToProduct(decodedProductInJson);
+        });
+    });
 }
 
-function  goToProduct(productObj) {
 
-    const obj = JSON.parse(decodeURIComponent(productObj));
-    const productInJson = JSON.stringify(obj);
+function  goToProduct(productInJson) {
+
     window.location.href = 
     `track.html?product=${productInJson}`;
 }
 
 function setOrdersInHtml(){
+
+
     let html =``;
 
-    
-
-    for(index in ordersList){
+    for(let index in ordersList){
 
         let orderList = objectToArray(ordersList[index]);
 
@@ -119,13 +72,17 @@ function setOrdersInHtml(){
         
         
 
-        for(index2 in orderList){
+        for(let index2 in orderList){
 
             let productIndex = orderList[index2].index;
 
             let objectInJson = '';
-            let text = JSON.stringify(orderList[index2])
-            objectInJson+=text;
+            objectInJson+= JSON.stringify(orderList[index2])
+            
+            const EncodedJson = encodeURIComponent(
+                JSON.stringify(orderList[index2])
+            );
+
             
 
             html+=`<div class="order-body">
@@ -154,7 +111,7 @@ function setOrdersInHtml(){
                                 </div>
 
                                 <div class="buy-button-container">
-                                    <button class="buy-btn" onclick="goToProduct('${encodeURIComponent(objectInJson)}')">
+                                    <button class="buy-btn" data-product_index="${productIndex}">
                                         Buy It Again
                                     </button>
                                 </div>
@@ -162,8 +119,7 @@ function setOrdersInHtml(){
                             </div>
 
                             <div class="track-package-container">
-                                <button class="track-button"
-                                        onclick="goToProduct('${encodeURIComponent(objectInJson)}')">
+                                <button class="track-button" data-object-in-json="${EncodedJson}">
                                     Track Package
                                 </button>
                             </div>
@@ -182,13 +138,14 @@ function setOrdersInHtml(){
 
 
     mainElement.innerHTML = html;
+    setBuyAgainButton();
+    setTrackButton();
 }
 
 function initialization(){
-    itemsInCart = getProductCartsFromLocalStorage();
-    numberOfItemsInCart = getNumberOfItemsInCart(itemsInCart);
-    numberOfItems.innerHTML = `${numberOfItemsInCart}`;
-    ordersList = getOrdersFromLocalStorage();
+    
+    loadCartFromLocalStorage('orders_page.js');
+    loadOrdersFromLocalStorage();
     setOrdersInHtml();
 }
 initialization();
