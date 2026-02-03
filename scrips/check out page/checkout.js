@@ -6,6 +6,7 @@ import { products } from "../products.js";
 import { storeOrdersInLocalStorage } from "../orders.js";
 import { resertCart } from "../carts.js";
 import {storeCartItemsIntoLocalStorage} from "../carts.js";
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
 const productContainer = document.querySelector('.product-container');
@@ -18,8 +19,7 @@ const totalPriceElement = document.querySelector('.total-price');
 const place_order_btn = document.querySelector('.place-order-btn');
 
 
-
-
+const today = dayjs();
 let numberOfProductsInPage = 0 ;
 
 
@@ -27,14 +27,6 @@ let numberOfProductsInPage = 0 ;
 place_order_btn.addEventListener('click',createOrder);
 
 
-function getDataAfterDays(days) {
-
-    const today = new Date();
-    const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + days);
-    return futureDate.toDateString();
-
-}
 
 function setUpdateButton(){ 
     document.querySelectorAll('.update-btn').forEach((updateBtn)=>{
@@ -95,17 +87,17 @@ function setRadioButtons(){
 
 
         radioBtn1.addEventListener('click',()=>{  
-            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(10);
+            productDate.innerHTML = 'Delivery date : '+today.add(10,'days').format('dddd , d MMMM');
             update_order_summary();
             });
 
         radioBtn2.addEventListener('click',()=>{ 
-            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(4);
+            productDate.innerHTML = 'Delivery date : '+today.add(4,'days').format('dddd , d MMMM');
             update_order_summary();
             });
 
         radioBtn3.addEventListener('click',()=>{ 
-            productDate.innerHTML = 'Delivery date : '+getDataAfterDays(2);
+            productDate.innerHTML = 'Delivery date : '+today.add(2,'days').format('dddd , d MMMM');
             update_order_summary();
             });
 
@@ -165,7 +157,7 @@ function createOrder(){
             index : productIndex ,
             quantity : productQuantity ,
             arriveData : theArriveData,
-            placed_Data : getDataAfterDays(0),
+            placed_Data : today.add(0,'days').format('dddd , d MMMM'),
             total_price_of_order : getToalPriceOfOrder()
         };
         
@@ -265,7 +257,7 @@ function setProductsInHtml(){
                 <div class="index-in-products" hidden>${index}</div>
 
                 <div class="delivery-data">
-                    Delivery date: ${getDataAfterDays(10)}
+                    Delivery date: ${today.add(10,'days').format('dddd , d MMMM')}
                 </div>
 
                 <div class="product-data">
@@ -301,7 +293,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date1">${getDataAfterDays(10)}</div>
+                            <div class="shipping-date1">${today.add(10,'days').format('dddd , d MMMM')}</div>
                             <div class="shipping-price">FREE Shipping</div>
                         </div>
                         <input class="first-radio" type="radio"  name="shipping-${itemNumber}" >
@@ -309,7 +301,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date2">${getDataAfterDays(4)}</div>
+                            <div class="shipping-date2">${today.add(4,'days').format('dddd , d MMMM')}</div>
                             <div class="shipping-price">$4.99 - Shipping</div>
                         </div>
                         <input class="second-radio" type="radio" name="shipping-${itemNumber}">
@@ -317,7 +309,7 @@ function setProductsInHtml(){
 
                     <label class="shipping-option">
                         <div>
-                            <div class="shipping-date3">${getDataAfterDays(2)}</div>
+                            <div class="shipping-date3">${today.add(2,'days').format('dddd , d MMMM')}</div>
                             <div class="shipping-price">$9.99 - Shipping</div>
                         </div>
                         <input class="third-radio" type="radio" name="shipping-${itemNumber}">
