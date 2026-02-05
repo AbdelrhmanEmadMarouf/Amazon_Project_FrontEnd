@@ -1,11 +1,11 @@
-import { itemsCartList } from "../carts.js";
-import { cartSize } from "../carts.js";
-import { loadCartFromLocalStorage } from "../carts.js";
-import { loadOrdersFromLocalStorage } from "../orders.js";
-import { products } from "../products.js";
-import { storeOrdersInLocalStorage } from "../orders.js";
-import { resertCart } from "../carts.js";
-import {storeCartItemsIntoLocalStorage} from "../carts.js";
+import { itemsCartList } from "../data/carts.js";
+import { cartSize } from "../data/carts.js";
+import { loadCartFromLocalStorage } from "../data/carts.js";
+import { loadOrdersFromLocalStorage } from "../data/orders.js";
+import { products } from "../data/products.js";
+import { storeOrdersInLocalStorage } from "../data/orders.js";
+import { resertCart } from "../data/carts.js";
+import {storeCartItemsIntoLocalStorage} from "../data/carts.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
@@ -332,7 +332,7 @@ function setProductsInHtml(){
 
 }
 
-function update_order_summary(){
+export function update_order_summary(){
 
     
 

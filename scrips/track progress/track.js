@@ -1,7 +1,7 @@
 const numberOfItems  = document.querySelector('#number_of_items_in_cart');
 const productElement = document.querySelector('.product-details');
-import {products} from "../products.js";
-import {cartSize} from "../carts.js";
+import {products} from "../data/products.js";
+import {cartSize} from "../data/carts.js";
 
 let product = {};
 
